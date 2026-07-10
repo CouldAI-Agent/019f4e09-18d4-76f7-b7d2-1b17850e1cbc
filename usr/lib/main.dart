@@ -10,58 +10,101 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Mecanismos Contables',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+        '/': (context) => const HomeScreen(),
       },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Mecanismos Contables de Crédito'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: const [
+          CreditMechanismCard(
+            title: 'Crédito Comercial',
+            description: 'Financiamiento a corto plazo entre empresas para la compra de bienes o servicios.',
+            icon: Icons.business,
+          ),
+          CreditMechanismCard(
+            title: 'Crédito Bancario',
+            description: 'Préstamos otorgados por instituciones financieras con tasas de interés y plazos definidos.',
+            icon: Icons.account_balance,
+          ),
+          CreditMechanismCard(
+            title: 'Arrendamiento Financiero (Leasing)',
+            description: 'Contrato donde el arrendador cede el uso de un bien a cambio de rentas periódicas, con opción de compra.',
+            icon: Icons.car_rental,
+          ),
+          CreditMechanismCard(
+            title: 'Factoraje (Factoring)',
+            description: 'Venta de cuentas por cobrar a una entidad financiera para obtener liquidez inmediata.',
+            icon: Icons.receipt_long,
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), 
     );
   }
 }
+
+class CreditMechanismCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final IconData icon;
+
+  const CreditMechanismCard({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 32, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              description,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
